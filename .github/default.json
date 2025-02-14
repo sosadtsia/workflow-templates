@@ -1,0 +1,76 @@
+{
+    "baseBranches": ["main"],
+    "rebaseWhen": "conflicted",
+    "labels": ["dependencies"],
+    "automergeStrategy": "merge-commit",
+    "ignoreTests": true,
+
+    "packageRules": [
+        {
+            "matchManagers": ["dockerfile"],
+            "matchPackagePatterns": ["alpine"],
+            "separateMinorPatch": true
+        },
+        {
+            "matchManagers": ["dockerfile"],
+            "matchPackagePatterns": ["alpine"],
+            "matchUpdateTypes": ["patch"],
+            "automerge": true,
+            "schedule": ["every weekend after 4am"]
+        },
+        {
+            "matchManagers": ["github-actions"],
+            "matchUpdateTypes": ["minor", "patch"],
+            "automerge": true,
+            "pinDigests": true,
+            "schedule": ["every weekend after 4am"]
+        },
+        {
+            "matchManagers": ["pip_requirements", "pip_setup", "poetry", "pipenv"],
+            "matchUpdateTypes": ["patch"],
+            "automerge": true,
+            "groupName": "Python patch dependencies"
+        },
+        {
+            "matchManagers": ["pip_requirements", "pip_setup", "poetry", "pipenv"],
+            "matchUpdateTypes": ["minor"],
+            "automerge": false,
+            "groupName": "Python minor dependencies"
+        },
+        {
+            "matchManagers": ["pip_requirements", "pip_setup", "poetry", "pipenv"],
+            "matchUpdateTypes": ["major"],
+            "automerge": false,
+            "groupName": "Python major dependencies",
+            "labels": ["dependencies", "breaking"]
+        },
+        {
+            "matchPackagePatterns": ["^pytest"],
+            "groupName": "pytest packages",
+            "labels": ["testing"]
+        },
+        {
+            "matchPackagePatterns": ["^pylint", "^flake8", "^black", "^isort", "^mypy"],
+            "groupName": "linters",
+            "labels": ["linting"]
+        }
+    ],
+
+    "pip_requirements": {
+        "enabled": true,
+        "fileMatch": ["^requirements.*\\.txt$", "^requirements/.*\\.txt$"]
+    },
+
+    "poetry": {
+        "enabled": true
+    },
+
+    "pipenv": {
+        "enabled": true
+    },
+
+    "pip_setup": {
+        "enabled": true
+    }
+}
+
