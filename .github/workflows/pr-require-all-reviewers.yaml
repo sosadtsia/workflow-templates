@@ -1,0 +1,21 @@
+##
+# pr-require-all-reviewers.yaml
+# Enforces an approval from every reviewers listed as a reviewer for a given pull request.
+##
+---
+name: 'Require all reviewers'
+on:
+  workflow_call:
+    secrets:
+      ACTIONS_PAT:
+        required: true
+
+jobs:
+  check-approvals:
+    name: 'Check approvals'
+    runs-on: ubuntu-latest
+    steps:
+      - name: 'Require all pull requests approvals'
+        uses: manuelmeister/require-approved-pull-request-action@0.0.1
+        with:
+          token: ${{ secrets.ACTIONS_PAT }}
