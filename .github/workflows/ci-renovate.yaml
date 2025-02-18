@@ -30,6 +30,9 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+    
+      - name: DEBUG
+        run: echo "${{ secrets.RENOVATE_APP_ID }} ${{ vars.HELLO }}"
 
       - name: Validate Renovate JSON
         run: jq type .github/renovate.json || exit 1
