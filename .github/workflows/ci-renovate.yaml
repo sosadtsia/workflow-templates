@@ -25,14 +25,14 @@ jobs:
     # Timeout-minutes to prevent hanging
     timeout-minutes: 60
 
-    environment: development
+    # environment: development
 
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-    
+
       - name: DEBUG
-        run: echo "${{ secrets.RENOVATE_APP_ID }} ${{ vars.HELLO }}"
+        run: echo '${{ secrets.RENOVATE_APP_ID }} ${{ vars.HELLO }}'
 
       - name: Validate Renovate JSON
         run: jq type .github/renovate.json || exit 1
@@ -51,11 +51,11 @@ jobs:
           # Repository taken from variable to keep configuration file generic
           RENOVATE_REPOSITORIES: ${{ github.repository }}
           # Onboarding not needed for self hosted
-          RENOVATE_ONBOARDING: "false"
+          RENOVATE_ONBOARDING: 'false'
           # Username for GitHub authentication (should match GitHub Application name + [bot])
-          RENOVATE_USERNAME: "sosadtsia-renovatebot[bot]"
+          RENOVATE_USERNAME: 'sosadtsia-renovatebot[bot]'
           # Git commit author used, must match GitHub App
-          RENOVATE_GIT_AUTHOR: "sosadtsia-renovatebot <1149912+sosadtsia-renovatebot[bot]@users.noreply.github.com>"
+          RENOVATE_GIT_AUTHOR: 'sosadtsia-renovatebot <1149912+sosadtsia-renovatebot[bot]@users.noreply.github.com>'
           # Use GitHub API to create commits (this allows for signed commits from GitHub App)
           RENOVATE_PLATFORM_COMMIT: "true"
           # Override schedule if set
