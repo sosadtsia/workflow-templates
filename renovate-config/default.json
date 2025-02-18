@@ -15,44 +15,161 @@
             "matchManagers": ["dockerfile"],
             "matchPackagePatterns": ["alpine"],
             "matchUpdateTypes": ["patch"],
-            "automerge": true,
+            "automerge": false,
             "schedule": ["every weekend after 4am"]
         },
         {
             "matchManagers": ["github-actions"],
             "matchUpdateTypes": ["minor", "patch"],
-            "automerge": true,
+            "automerge": false,
             "pinDigests": true,
             "schedule": ["every weekend after 4am"]
         },
         {
             "matchManagers": ["pip_requirements", "pip_setup", "poetry", "pipenv"],
             "matchUpdateTypes": ["patch"],
-            "automerge": true,
-            "groupName": "Python patch dependencies"
+            "automerge": false,
+            "groupName": "Python patch dependencies",
+            "schedule": ["every weekend after 4am"]
         },
         {
             "matchManagers": ["pip_requirements", "pip_setup", "poetry", "pipenv"],
             "matchUpdateTypes": ["minor"],
             "automerge": false,
-            "groupName": "Python minor dependencies"
+            "groupName": "Python minor dependencies",
+            "schedule": ["every weekend after 4am"]
         },
         {
             "matchManagers": ["pip_requirements", "pip_setup", "poetry", "pipenv"],
             "matchUpdateTypes": ["major"],
             "automerge": false,
             "groupName": "Python major dependencies",
-            "labels": ["dependencies", "breaking"]
+            "labels": ["dependencies", "breaking"],
+            "schedule": ["every weekend after 4am"]
         },
         {
             "matchPackagePatterns": ["^pytest"],
+            "automerge": false,
             "groupName": "pytest packages",
-            "labels": ["testing"]
+            "labels": ["testing"],
+            "schedule": ["every weekend after 4am"]
         },
         {
             "matchPackagePatterns": ["^pylint", "^flake8", "^black", "^isort", "^mypy"],
+            "automerge": false,
             "groupName": "linters",
-            "labels": ["linting"]
+            "labels": ["linting"],
+            "schedule": ["every weekend after 4am"]
+        },
+        {
+            "matchManagers": ["gomod"],
+            "matchUpdateTypes": ["patch"],
+            "automerge": false,
+            "groupName": "Go patch dependencies",
+            "schedule": ["every weekend after 4am"]
+        },
+        {
+            "matchManagers": ["gomod"],
+            "matchUpdateTypes": ["minor"],
+            "automerge": false,
+            "groupName": "Go minor dependencies",
+            "schedule": ["every weekend after 4am"]
+        },
+        {
+            "matchManagers": ["gomod"],
+            "matchUpdateTypes": ["major"],
+            "automerge": false,
+            "groupName": "Go major dependencies",
+            "labels": ["dependencies", "breaking"],
+            "schedule": ["every weekend after 4am"]
+        },
+        {
+            "matchManagers": ["terraform"],
+            "matchUpdateTypes": ["patch"],
+            "automerge": false,
+            "groupName": "Terraform patch dependencies",
+            "schedule": ["every weekend after 4am"]
+        },
+        {
+            "matchManagers": ["terraform"],
+            "matchUpdateTypes": ["minor"],
+            "automerge": false,
+            "groupName": "Terraform minor dependencies",
+            "schedule": ["every weekend after 4am"]
+        },
+        {
+            "matchManagers": ["terraform"],
+            "matchUpdateTypes": ["major"],
+            "automerge": false,
+            "groupName": "Terraform major dependencies",
+            "labels": ["dependencies", "breaking"],
+            "schedule": ["every weekend after 4am"]
+        },
+        {
+            "matchManagers": ["helm"],
+            "matchUpdateTypes": ["patch"],
+            "automerge": false,
+            "groupName": "Helm patch dependencies",
+            "schedule": ["every weekend after 4am"]
+        },
+        {
+            "matchManagers": ["helm"],
+            "matchUpdateTypes": ["minor"],
+            "automerge": false,
+            "groupName": "Helm minor dependencies",
+            "schedule": ["every weekend after 4am"]
+        },
+        {
+            "matchManagers": ["helm"],
+            "matchUpdateTypes": ["major"],
+            "automerge": false,
+            "groupName": "Helm major dependencies",
+            "labels": ["dependencies", "breaking"],
+            "schedule": ["every weekend after 4am"]
+        },
+        {
+            "matchManagers": ["git-submodules"],
+            "matchUpdateTypes": ["patch"],
+            "automerge": false,
+            "groupName": "Git submodule patch updates",
+            "schedule": ["every weekend after 4am"]
+        },
+        {
+            "matchManagers": ["git-submodules"],
+            "matchUpdateTypes": ["minor"],
+            "automerge": false,
+            "groupName": "Git submodule minor updates",
+            "schedule": ["every weekend after 4am"]
+        },
+        {
+            "matchManagers": ["git-submodules"],
+            "matchUpdateTypes": ["major"],
+            "automerge": false,
+            "groupName": "Git submodule major updates",
+            "labels": ["dependencies", "breaking"],
+            "schedule": ["every weekend after 4am"]
+        },
+        {
+            "matchManagers": ["kubernetes"],
+            "matchUpdateTypes": ["patch"],
+            "automerge": false,
+            "groupName": "Kubernetes API patch dependencies",
+            "schedule": ["every weekend after 4am"]
+        },
+        {
+            "matchManagers": ["kubernetes"],
+            "matchUpdateTypes": ["minor"],
+            "automerge": false,
+            "groupName": "Kubernetes API minor dependencies",
+            "schedule": ["every weekend after 4am"]
+        },
+        {
+            "matchManagers": ["kubernetes"],
+            "matchUpdateTypes": ["major"],
+            "automerge": false,
+            "groupName": "Kubernetes API major dependencies",
+            "labels": ["dependencies", "breaking"],
+            "schedule": ["every weekend after 4am"]
         }
     ],
 
@@ -71,6 +188,25 @@
 
     "pip_setup": {
         "enabled": true
+    },
+
+    "gomod": {
+        "enabled": true
+    },
+
+    "terraform": {
+        "enabled": true
+    },
+
+    "helm": {
+        "enabled": true
+    },
+
+    "git-submodules": {
+        "enabled": true
+    },
+
+    "kubernetes": {
+        "enabled": true
     }
 }
-
