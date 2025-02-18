@@ -19,20 +19,13 @@ on:
         type: string
 concurrency: renovate
 
-permissions:
-  contents: read
-  issues: write
-  pull-requests: write
-  actions: read
-  checks: write
-  deployments: write
-  statuses: write
-
 jobs:
   renovate:
     runs-on: ubuntu-latest
     # Timeout-minutes to prevent hanging
     timeout-minutes: 60
+
+    environment: development
 
     steps:
       - name: Checkout
