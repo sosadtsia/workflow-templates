@@ -27,6 +27,11 @@ concurrency: renovate
 jobs:
   renovate:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+      issues: write
+
     # Timeout-minutes to prevent hanging
     timeout-minutes: 60
 
