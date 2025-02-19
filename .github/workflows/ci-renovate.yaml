@@ -37,7 +37,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Validate Renovate JSON
-        run: jq type .github/default.json || exit 1
+        run: jq type .github/renovate.json || exit 1
 
       - name: Get token
         uses: actions/create-github-app-token@v1
@@ -64,5 +64,5 @@ jobs:
           RENOVATE_FORCE: ${{ github.event.inputs.overrideSchedule == 'true' && '{''schedule'':null}' || '' }}
           LOG_LEVEL: ${{ inputs.logLevel || 'info' }}
         with:
-          configurationFile: .github/default.json
+          configurationFile: .github/renovate.json
           token: '${{ steps.app-token.outputs.token }}'
