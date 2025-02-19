@@ -64,5 +64,5 @@ jobs:
           RENOVATE_FORCE: ${{ github.event.inputs.overrideSchedule == 'true' && '{''schedule'':null}' || '' }}
           LOG_LEVEL: ${{ inputs.logLevel || 'info' }}
         with:
-          configurationFile: .github/renovate.json
+          configurationFile: renovate.json
           token: '${{ steps.app-token.outputs.token }}'
