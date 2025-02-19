@@ -37,7 +37,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Validate Renovate JSON
-        run: jq type .github/renovate.json || exit 1
+        run: jq type renovate.json || exit 1
 
       - name: Get token
         uses: actions/create-github-app-token@v1
