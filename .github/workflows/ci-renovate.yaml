@@ -41,9 +41,6 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Validate Renovate JSON
-        run: jq type renovate.json || exit 1
-
       - name: Get token
         uses: actions/create-github-app-token@v1
         id: app-token
@@ -53,7 +50,7 @@ jobs:
           owner: ${{ github.repository_owner }}
 
       - name: Self-hosted Renovate
-        uses: renovatebot/github-action@v41.0.13
+        uses: renovatebot/github-action@v42.0.1
         env:
           # Repository taken from variable to keep configuration file generic
           RENOVATE_REPOSITORIES: ${{ github.repository }}
@@ -69,5 +66,5 @@ jobs:
           RENOVATE_FORCE: ${{ github.event.inputs.overrideSchedule == 'true' && '{''schedule'':null}' || '' }}
           LOG_LEVEL: ${{ inputs.logLevel || 'info' }}
         with:
-          configurationFile: .github/renovate.json5 || renovate.json
+          configurationFile: .github/renovate.json5
           token: '${{ steps.app-token.outputs.token }}'
