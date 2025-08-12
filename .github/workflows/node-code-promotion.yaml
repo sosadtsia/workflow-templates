@@ -27,7 +27,7 @@ jobs:
       - run: echo 'The name the branch is `${{ github.ref_name }}` repository name is `${{ github.repository }}`.'
 
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Setup Node
         uses: actions/setup-node@v4
