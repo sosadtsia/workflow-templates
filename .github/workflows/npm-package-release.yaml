@@ -34,7 +34,7 @@ jobs:
 
     steps:
       - name: Check out repository code
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
 
       - name: Node.js version ${{ matrix.node-version }}
         uses: actions/setup-node@v6
@@ -65,7 +65,7 @@ jobs:
       - run: echo 'The name the branch is `${{ github.ref_name }}` repository name is `${{ github.workspace }}`.'
 
       - name: Check out repository code
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
         with:
           ssh-key: ${{ secrets.DEPLOY_PRIVATE_KEY }}
 
