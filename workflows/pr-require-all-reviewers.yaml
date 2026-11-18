@@ -13,9 +13,9 @@ on:
 jobs:
   check-approvals:
     name: 'Check approvals'
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-26.04
     steps:
       - name: 'Require all pull requests approvals'
-        uses: manuelmeister/require-approved-pull-request-action@0.0.1
+        uses: manuelmeister/require-approved-pull-request-action@902369d0610e0df39589eedcae3ab228d3a64a8d # 0.0.1
         with:
           token: ${{ secrets.ACTIONS_PAT }}

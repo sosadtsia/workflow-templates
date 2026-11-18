@@ -1,0 +1,147 @@
+##
+# npm-package-release.yaml
+# Will publish NPM package to GitHub Packages.
+##
+---
+name: Release
+
+on:
+  pull_request:
+    types: ['closed']
+    branches: ['main']
+
+  workflow_call:
+    inputs:
+      package_version_type:
+        type: string
+        description: Sem-version type(major, minor or patch)
+        required: true
+
+env:
+  NODE_VERSION: '24.x'
+  PACKAGE_VERSION_TYPE: 'patch'
+
+jobs:
+  build:
+    if: github.event.pull_request.merged == true
+
+    strategy:
+      matrix:
+        node-version: [22.x, 24.x]
+        os: [ubuntu-26.04, macos-latest]
+
+    runs-on: ${{ matrix.os }}
+
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - name: Detect npm lockfile
+        id: npm-lock
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [[ -f package-lock.json || -f npm-shrinkwrap.json ]]; then
+            echo "present=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "present=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Node.js version ${{ matrix.node-version }}
+        if: steps.npm-lock.outputs.present == 'true'
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: npm
+
+      - name: Install, run build and test
+        if: steps.npm-lock.outputs.present == 'true'
+        shell: bash
+        run: |
+          set -euo pipefail
+          npm ci
+          npm run build
+          npm run lint
+          npm test
+
+  publish:
+    runs-on: ubuntu-26.04
+    if: ${{ success() }}
+    needs: [ build ]
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+      - run: echo '🔎 The job was automatically triggered by a ${{ github.event_name }} event.'
+
+      - run: echo 'This job is now running on a ${{ runner.os }} server hosted by GitHub.'
+
+      - run: echo 'The name the branch is `${{ github.ref_name }}` repository name is `${{ github.workspace }}`.'
+
+      - name: Check out repository code
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ssh-key: ${{ secrets.DEPLOY_PRIVATE_KEY }}
+
+      - name: Detect npm lockfile
+        id: npm-lock
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [[ -f package-lock.json || -f npm-shrinkwrap.json ]]; then
+            echo "present=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "present=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Node.js version ${{ env.NODE_VERSION }}
+        if: steps.npm-lock.outputs.present == 'true'
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: npm
+          registry-url: 'https://npm.pkg.github.com'
+          scope: ''
+
+      - name: Install npm packages
+        if: steps.npm-lock.outputs.present == 'true'
+        shell: bash
+        run: |
+          set -euo pipefail
+          npm ci
+
+      - name: Setup Git
+        if: steps.npm-lock.outputs.present == 'true'
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "${{ vars.USER_NAME }}"
+          git config user.email "${{ vars.USER_EMAIL }}"
+
+      - name: Update application version
+        id: version
+        if: steps.npm-lock.outputs.present == 'true'
+        shell: bash
+        run: |
+          set -euo pipefail
+          npm version "${{ inputs.package_version_type }}"
+
+      - name: Publish the package
+        if: steps.npm-lock.outputs.present == 'true'
+        shell: bash
+        run: |
+          set -euo pipefail
+          npm publish
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Push latest version to "${{ github.ref_name }}" branch
+        if: steps.npm-lock.outputs.present == 'true'
+        shell: bash
+        run: |
+          set -euo pipefail
+          git push origin "${{ github.ref_name }}" --follow-tags
+
+      - name: Check the status of the job
+        run: echo "🍏 This job's status is ${{ job.status }}."
